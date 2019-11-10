@@ -134,7 +134,7 @@ def main():
 def getUrl(query):
     # searchs google and returns the first result found
     urls = []
-    for result in search(query + " myanimelist", tld="com", lang="en", num=1, start=0, stop=1, pause=2.0):
+    for result in search(query + " site:myanimelist.net", tld="com", lang="en", num=1, start=0, stop=1, pause=2.0):
         urls.append(result)
     return urls[0]
 
