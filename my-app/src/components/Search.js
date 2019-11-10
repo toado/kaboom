@@ -26,7 +26,7 @@ export default class Search extends Component {
             <div className = "container-fluid">
                 <div className = "row align-items-center justify-content-center">
                     <div>
-                    <Form inline className = "searchBox" value = {this.state.filmName} onChange = {this.filmNameChange}>
+                    <Form inline className = "searchBox input-large" value = {this.state.filmName} onChange = {this.filmNameChange}>
                         <FormControl type="text" placeholder="Search" />
                     </Form>
                     </div>
