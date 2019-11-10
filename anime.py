@@ -50,22 +50,39 @@ class Show:
         for ID in genresID:
             genres += f"&genre[]={ID}"
 
-        url1 = f"https://myanimelist.net/anime.php?q=&type=0&score={score}&status=0&p=0&r=0&sm=0&sd=0&sy=0&em=0&ed=0&ey=0&c[]=c&gx=0{genres}"
-        print(url1)
-        soup = BeautifulSoup(openUrl(url1), "html.parser")
-        items = soup.findAll("a", {"class":"hoverinfo_trigger fw-b fl-l"})
+        items = self.getItems(score, genres)
 
+        i = 0
+        counter = 0
         recommend = []
-        if len(items) >= 3:
-            random.shuffle(items)
-            items = items[0:3]
-            for item in items:
-                itemUrl = item["href"]
-                print(itemUrl)
+        while i < 3:
+            try:
+                itemUrl = items[counter]["href"]
+            except IndexError:
+                items = self.getItems(score - 1, genres)
+                counter = 0
+                continue
+            try:
                 recommendShow = Show(itemUrl)
-                recommendShow.getInfo()
-                recommendShow.printInfo()
-                recommend.append(recommendShow)
+            except UnicodeEncodeError:
+                print("UnicodeEncodeError")
+                continue
+            else:
+                i += 1
+            finally:
+                counter += 1
+            recommendShow.getInfo()
+            recommend.append(recommendShow)
+
+        return recommend
+
+    def getItems(self, score, genres):
+        url = f"https://myanimelist.net/anime.php?q=&type=0&score={score}&status=0&p=0&r=0&sm=0&sd=0&sy=0&em=0&ed=0&ey=0&c[]=c&gx=0{genres}"
+        print(url)
+        soup = BeautifulSoup(openUrl(url), "html.parser")
+        items = soup.findAll("a", {"class":"hoverinfo_trigger fw-b fl-l"})
+        random.shuffle(items)
+        return items
 
     def printInfo(self):
         print()
@@ -74,10 +91,7 @@ class Show:
         print("Image: " + self.image)
         print("Score: " + self.score)
         print("Year: " + self.year)
-        print("Genres: ", end="")
-        for genre in self.genres:
-            print(genre, end=", ")
-        print()
+        print("Genres: " + ", ".join(self.genres))
         print("---------------------------------------------------------------")
         print()
 
@@ -86,13 +100,20 @@ def main():
     random.seed()
 
     query = input("Enter the title: ")
-    url = getUrl(query)
 
-    userShow = Show(url)
-    userShow.getInfo()
+    try:
+        url = getUrl(query)
+        userShow = Show(url)
+        userShow.getInfo()
+    except IndexError:
+        print("Not a valid show.")
+        return 1
+
     userShow.printInfo()
 
-    userShow.recommendShows()
+    recommendations = userShow.recommendShows()
+    for recommendation in recommendations:
+        recommendation.printInfo()
 
 
 def getUrl(query):
@@ -107,23 +128,6 @@ def openUrl(url):
     pageHTML = client.read()
     client.close()
     return pageHTML
-
-
-def makeGenreDict():
-    url = "https://myanimelist.net/anime.php"
-    soup = BeautifulSoup(openUrl(url), "html.parser")
-
-    counter = 1
-    genreDict = {}
-    soup = soup.findAll("div", {"class":"genre-link"})[0]
-    columns = soup.findAll("div", {"class":"genre-list-col"})
-    for column in columns:
-        rows = column.findAll("div", {"class":"genre-list al"})
-        for row in rows:
-            genre = row.a.text.split("(")
-            genreDict[genre[0].strip()] = counter
-            counter += 1
-    return genreDict
 
 
 if __name__ == "__main__":
