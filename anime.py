@@ -49,7 +49,7 @@ class Show:
         # get the ID of the random genres
         genresID = []
         for genre in genresList:
-            genreUrl = getUrl(genre + " genre")
+            genreUrl = getUrl(genre + " site:myanimelist.net/anime/genre")
             genresID.append(genreUrl.split("/")[5])
 
         # concatenate the genres into a formatted string to prepare for searching
@@ -117,7 +117,7 @@ def main():
     query = input("Enter the title: ")
 
     try:
-        url = getUrl(query)
+        url = getUrl(query + " site:myanimelist.net")
         userShow = Show(url)
         userShow.getInfo()
     except IndexError:
@@ -134,7 +134,7 @@ def main():
 def getUrl(query):
     # searchs google and returns the first result found
     urls = []
-    for result in search(query + " site:myanimelist.net", tld="com", lang="en", num=1, start=0, stop=1, pause=2.0):
+    for result in search(query, tld="com", lang="en", num=1, start=0, stop=1, pause=2.0):
         urls.append(result)
     return urls[0]
 
