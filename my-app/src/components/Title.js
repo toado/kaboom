@@ -13,7 +13,7 @@ export default class Title extends Component {
                             Kaboom!
                         </div>
                         <div className = "description">
-                            For all the indecisive movie watchers!
+                            Movie recommender for indecisive people!
                         </div>
                     </div>
                 </div>
