@@ -116,10 +116,10 @@ class MovieInformation:
         self.genre = genre
         self.year  = year
     def __str__(self):
-        return f"{line}\nTitle: {self.title}\nScore: {self.score}\nCover URL: {self.image}\nGenre(s): {self.genre}\nYear: {self.year}\n{line}"
+        return f"{line}\nTitle: {self.title}\nScore: {self.score}\nCover URL: {self.image}\nGenre(s): {self.genre}\nYear: {self.year}\n{line}\n"
     
 def get_year(title):
-    return title[title.find('('): title.find(')') + 1]
+    return title[title.rfind('('): title.rfind(')') + 1]
         
 def get_image(url):
     website = urllib.request.urlopen(url)
