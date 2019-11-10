@@ -27,9 +27,9 @@ export default class Select extends Component {
             <div className = "container-fluid">
                 <div className = "row align-items-center justify-content-center">
                 <DropdownButton title = {this.state.genreName} onSelect = {this.genreSelected.bind(this)} variant="success" id="dropdown-basic-button">
-                    <Dropdown.Item title = "movie">Movie</Dropdown.Item>
-                    <Dropdown.Item title = "tv">TV Show</Dropdown.Item>
-                    <Dropdown.Item title = "anime">Anime</Dropdown.Item>
+                    <Dropdown.Item title = "Movie">Movie</Dropdown.Item>
+                    <Dropdown.Item title = "TV Show">TV Show</Dropdown.Item>
+                    <Dropdown.Item title = "Anime">Anime</Dropdown.Item>
                 </DropdownButton>
                 </div>
             </div>
