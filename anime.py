@@ -38,6 +38,7 @@ class Show:
 
     def recommendShows(self):
         # recommends three shows to the user based on the rating and common genres
+        print("Searching...")
         score = round(float(self.score))
 
         # randomly choose half of the genres to search
