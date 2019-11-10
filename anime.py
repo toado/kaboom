@@ -15,6 +15,7 @@ class Show:
         self.genres = []
 
     def getInfo(self):
+        # scraps the user given Show page for its title, image, score, year, and genres
         soup = self.soup
 
         title = soup.findAll("span", {"itemprop":"name"})
@@ -36,22 +37,27 @@ class Show:
             self.genres.append(genreHTML.text.strip())
 
     def recommendShows(self):
+        # recommends three shows to the user based on the rating and common genres
         score = round(float(self.score))
 
+        # randomly choose half of the genres to search
         genresList = self.genres
         random.shuffle(genresList)
         genresList = genresList[0: (len(genresList) + 1) // 2]
 
+        # get the ID of the random genres
         genresID = []
         for genre in genresList:
             genresID.append(getUrl(genre).split("/")[5])
 
+        # concatenate the genres into a formatted string to prepare for searching
         genres = ""
         for ID in genresID:
             genres += f"&genre[]={ID}"
 
         items = self.getItems(score, genres)
 
+        # iterate over Shows in random order until three valid recommendations are found
         i = 0
         counter = 0
         recommend = []
@@ -59,12 +65,15 @@ class Show:
             try:
                 itemUrl = items[counter]["href"]
             except IndexError:
+                # accounts for when there are too few Shows with a certain rating and genre
+                # lowers the rating to expand the search range
                 items = self.getItems(score - 1, genres)
                 counter = 0
                 continue
             try:
                 recommendShow = Show(itemUrl)
             except UnicodeEncodeError:
+                # accounts for when there are unusual symbols in the title
                 print("UnicodeEncodeError")
                 continue
             else:
@@ -77,6 +86,7 @@ class Show:
         return recommend
 
     def getItems(self, score, genres):
+        # get all Shows that match the score and genre of the user given Show
         url = f"https://myanimelist.net/anime.php?q=&type=0&score={score}&status=0&p=0&r=0&sm=0&sd=0&sy=0&em=0&ed=0&ey=0&c[]=c&gx=0{genres}"
         print(url)
         soup = BeautifulSoup(openUrl(url), "html.parser")
@@ -117,6 +127,7 @@ def main():
 
 
 def getUrl(query):
+    # searchs google and returns the first result found
     urls = []
     for result in search(query + " myanimelist", tld="com", lang="en", num=1, start=0, stop=1, pause=2.0):
         urls.append(result)
@@ -124,6 +135,7 @@ def getUrl(query):
 
 
 def openUrl(url):
+    # open url as html for later use as soup
     client = urlopen(url)
     pageHTML = client.read()
     client.close()
