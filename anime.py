@@ -48,7 +48,8 @@ class Show:
         # get the ID of the random genres
         genresID = []
         for genre in genresList:
-            genresID.append(getUrl(genre).split("/")[5])
+            genreUrl = getUrl(genre + " genre")
+            genresID.append(genreUrl.split("/")[5])
 
         # concatenate the genres into a formatted string to prepare for searching
         genres = ""
@@ -58,16 +59,21 @@ class Show:
         items = self.getItems(score, genres)
 
         # iterate over Shows in random order until three valid recommendations are found
-        i = 0
         counter = 0
         recommend = []
-        while i < 3:
+        showsUrl = []
+        while len(recommend) < 3:
             try:
                 itemUrl = items[counter]["href"]
+                if itemUrl == self.url or itemUrl in showsUrl:
+                # makes sure recommended Shows do not repeat
+                    counter += 1
+                    continue
             except IndexError:
                 # accounts for when there are too few Shows with a certain rating and genre
                 # lowers the rating to expand the search range
-                items = self.getItems(score - 1, genres)
+                score -= 1
+                items = self.getItems(score, genres)
                 counter = 0
                 continue
             try:
@@ -76,10 +82,9 @@ class Show:
                 # accounts for when there are unusual symbols in the title
                 print("UnicodeEncodeError")
                 continue
-            else:
-                i += 1
             finally:
                 counter += 1
+            showsUrl.append(itemUrl)
             recommendShow.getInfo()
             recommend.append(recommendShow)
 
