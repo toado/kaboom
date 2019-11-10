@@ -94,7 +94,6 @@ class Show:
     def getItems(self, score, genres):
         # get all Shows that match the score and genre of the user given Show
         url = f"https://myanimelist.net/anime.php?q=&type=0&score={score}&status=0&p=0&r=0&sm=0&sd=0&sy=0&em=0&ed=0&ey=0&c[]=c&gx=0{genres}"
-        print(url)
         soup = BeautifulSoup(openUrl(url), "html.parser")
         items = soup.findAll("a", {"class":"hoverinfo_trigger fw-b fl-l"})
         random.shuffle(items)
