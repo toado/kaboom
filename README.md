@@ -1,9 +1,9 @@
 # Kaboom!
 
-Kaboom! is a web application that generates movie recommendations for the user. 
+Kaboom! is a web application that generates movie recommendations for users. 
 
 ## Description
-With so many movies, TV shows and animes on demand, it can be hard to choose something to watch. Unlike doing a generic google search for "movies similar to ......", Kaboom! utilizes BeautifulSoup4 to scrape Rotten Tomatoes, IMDB, and MyAnimeList to generate a good recommendation for based of genre and rating. The user interface is realized through a webserver, built with React.js and Flask. 
+With so many movies, TV shows and animes on demand, it can be hard to choose something to watch. Unlike doing a generic google search for "movies similar to ......", Kaboom! utilizes BeautifulSoup4 to scrape Rotten Tomatoes, IMDB, and MyAnimeList to generate good recommendations based on genres and ratings. The user interface is developed through a webserver, built with React.js and Flask. 
 
 ## How to Run
 ```bash
