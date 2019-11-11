@@ -8,7 +8,8 @@ With so many movies, TV shows and animes on demand, it can be hard to choose som
 ## How to Run
 ```bash
 git clone https://github.com/h87kg/Kaboom.git
-cd Kaboom && cd my-app
+cd Kaboom 
+cd my-app
 npm start
 ```
 ## Contributions
